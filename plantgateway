@@ -11,7 +11,12 @@ import sys
 
 
 def main():
-    pg = PlantGateway()
+    parser = argparse.ArgumentParser(description="Collect data from Mi Flora plant sensors")
+    parser.add_argument('-c', '--config', type=str, default='~/.plantgw.yaml', help="Path to the configuration file")
+    args = parser.parse_args()
+
+    config_file_path = args.config
+    pg = PlantGateway(config_file_path)
     failed_sensors = pg.process_all()
     if len(failed_sensors) > 0:
         print('Could not get data from {}sensor(s): {}.'.format(
